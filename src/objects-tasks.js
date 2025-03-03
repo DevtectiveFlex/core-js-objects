@@ -114,8 +114,9 @@ function isEmptyObject(obj) {
  *    immutableObj.newProp = 'new';
  *    console.log(immutableObj) => {a: 1, b: 2}
  */
-function makeImmutable(/* obj */) {
-  throw new Error('Not implemented');
+function makeImmutable(obj) {
+  Object.freeze(obj);
+  return obj;
 }
 
 /**
@@ -163,8 +164,12 @@ function sellTickets(/* queue */) {
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
+  this.getArea = function getArea() {
+    return this.width * this.height;
+  };
 }
 
 /**
@@ -177,8 +182,8 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { height: 10, width: 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
 
 /**
@@ -192,8 +197,8 @@ function getJSON(/* obj */) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  return Object.setPrototypeOf(JSON.parse(json), proto);
 }
 
 /**
@@ -222,8 +227,33 @@ function fromJSON(/* proto, json */) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  const compareCity = (a, b) => {
+    if (a.country === b.country) {
+      if (a.city < b.city) {
+        return -1;
+      }
+      if (a.city < b.city) {
+        return 1;
+      }
+    }
+    return 0;
+  };
+
+  const compareCountries = (a, b) => {
+    if (a.country < b.country) {
+      return -1;
+    }
+    if (a.country < b.country) {
+      return 1;
+    }
+    return 0;
+  };
+
+  let result = arr.sort(compareCountries);
+  result = arr.sort(compareCity);
+
+  return result;
 }
 
 /**
